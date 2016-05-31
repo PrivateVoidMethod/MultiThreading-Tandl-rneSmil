@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MultiThreading
@@ -52,7 +47,7 @@ namespace MultiThreading
         {
             venteværelse.Invoke((MethodInvoker)delegate ()
             {
-                string VågnOp = String.Format("{0} vækker tandlægen", venteværelse.SelectedItem.ToString());
+                string VågnOp = String.Format("{0} vækker tandlægen", venteværelse.Items[0]);
                 this.listboxstatus.BeginInvoke((MethodInvoker)delegate () { this.listboxstatus.Items.Add(VågnOp); });
             });
         }
@@ -62,7 +57,7 @@ namespace MultiThreading
         {
             venteværelse.Invoke((MethodInvoker)delegate ()
             {
-                string BehandletPatint = String.Format("{0} bliver behandlet", venteværelse.SelectedItem.ToString());
+                string BehandletPatint = String.Format("{0} bliver behandlet", venteværelse.Items[0]);
                 this.listboxstatus.BeginInvoke(
                     (MethodInvoker)delegate () { this.listboxstatus.Items.Add(BehandletPatint); });
             });
@@ -70,7 +65,7 @@ namespace MultiThreading
             textboxbehandling.Invoke((MethodInvoker)delegate ()
            {
                textboxbehandling.BeginInvoke(
-                   (MethodInvoker)delegate () { textboxbehandling.Text = venteværelse.SelectedItem.ToString(); });
+                   (MethodInvoker)delegate () { textboxbehandling.Text = venteværelse.Items[0].ToString(); });
            });
         }
 
@@ -110,7 +105,7 @@ namespace MultiThreading
 
                 try
                 {
-                    Monitor.Enter(venteværelse, ref locked);
+                    Monitor.TryEnter(venteværelse, ref locked);
 
                     if (locked)
                     {
@@ -128,22 +123,17 @@ namespace MultiThreading
                             }
                             else if (textboxstatus.Text == "Sover")
                             {
-                                venteværelse.BeginInvoke(
-                                    (MethodInvoker)delegate ()
-                                   {
-                                       venteværelse.SetSelected(0, false);
-                                   });
-
+                                venteværelse.Invoke((MethodInvoker)delegate ()
+                                {
+                                    string VågnOp = String.Format("{0} vækker tandlægen", venteværelse.TopIndex.ToString());
+                                    this.listboxstatus.BeginInvoke((MethodInvoker)delegate () { this.listboxstatus.Items.Add(VågnOp); });
+                                });
                                 Udskriv_VækTandlæge();
                             }
 
                             TilføjTekstTilTextboxStatus("Arbejder");
-                            venteværelse.BeginInvoke((MethodInvoker)delegate ()
-                               {
-                                   venteværelse.SetSelected(0, true);
-                               });
                             Udskriv_HvemDerBliverBehandlet();
-                            venteværelse.BeginInvoke((MethodInvoker)delegate ()
+                            venteværelse.Invoke((MethodInvoker)delegate ()
                                {
                                    venteværelse.Items.RemoveAt(venteværelse.TopIndex);
                                });
