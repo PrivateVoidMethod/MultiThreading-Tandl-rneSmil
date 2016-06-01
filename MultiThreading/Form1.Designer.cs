@@ -135,11 +135,21 @@
             // numericUpDown1
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(573, 58);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(77, 20);
             this.numericUpDown1.TabIndex = 11;
             this.numericUpDown1.Value = new decimal(new int[] {
-            10,
+            1,
             0,
             0,
             0});
@@ -167,11 +177,21 @@
             // numericUpDown2
             // 
             this.numericUpDown2.Location = new System.Drawing.Point(235, 85);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(77, 20);
             this.numericUpDown2.TabIndex = 14;
             this.numericUpDown2.Value = new decimal(new int[] {
-            10,
+            2,
             0,
             0,
             0});
@@ -238,11 +258,21 @@
             // numericUpDown3
             // 
             this.numericUpDown3.Location = new System.Drawing.Point(235, 231);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(77, 20);
             this.numericUpDown3.TabIndex = 21;
             this.numericUpDown3.Value = new decimal(new int[] {
-            10,
+            2,
             0,
             0,
             0});
@@ -303,7 +333,6 @@
 
         private System.Windows.Forms.ListBox Venteværelse_Listbox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox_Status;
         private System.Windows.Forms.TextBox textBox_Patient;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button Start_Knap;
@@ -316,11 +345,12 @@
 		private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox TextBoxStatus2;
         private System.Windows.Forms.TextBox textBox_Patient2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.GroupBox groupBox1;
+        public System.Windows.Forms.TextBox textBox_Status;
+        public System.Windows.Forms.TextBox TextBoxStatus2;
     }
 }
 

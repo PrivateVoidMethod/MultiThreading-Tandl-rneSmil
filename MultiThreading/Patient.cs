@@ -20,16 +20,25 @@ namespace MultiThreading
         private bool patientAntalTjek = true;
         private int patientAntal;
         private string patient;
-        private int patientnummer = 1;
+        public int patientnummer;
         private string patientnavn;
+        private Form1 form;
+        public Tandlæge tandlægeLige;
+        public Tandlæge tandlægeUlige;
+
+        private TextBox textboxstatus;
 
         //Constructor
-        public Patient(ListBox venteværelse, ListBox status, NumericUpDown patientDelay, Button knap)
+        public Patient(ListBox venteværelse, ListBox status, NumericUpDown patientDelay, Button knap, Form1 form, Tandlæge tandlægeLige, TextBox textboxstatus, Tandlæge tandlægeUlige)
         {
             this.venteværelse = venteværelse;
             this.patientDelay = patientDelay;
             this.status = status;
             this.knap = knap;
+            this.form = form;
+            this.tandlægeLige = tandlægeLige;
+            this.textboxstatus = textboxstatus;
+            this.tandlægeUlige = tandlægeUlige;
         }
 
         // Overload construcktor
@@ -53,7 +62,7 @@ namespace MultiThreading
             // venteværelse.BeginInvoke((MethodInvoker)delegate () { patientAntal = venteværelse.Items.Count; });
 
             patientAntal = venteværelse.Items.Count;
-            if (patientAntal == 10)
+            if (patientAntal >= 10)
             {
                 patientAntalTjek = false;
                 return patientAntalTjek;
@@ -80,6 +89,11 @@ namespace MultiThreading
             status.BeginInvoke((MethodInvoker)delegate () { status.TopIndex = status.Items.Count - 1; });
         }
 
+        private void TilføjTekstTilTextboxStatus(string Tekst)
+        {
+            textboxstatus.BeginInvoke((MethodInvoker)delegate () { textboxstatus.Text = (Tekst); });
+        }
+
         // Opretter en patient til venteværelset
         public void Opret_Ny_Patient()
         {
@@ -89,12 +103,30 @@ namespace MultiThreading
                 Thread.Sleep(Convert.ToInt32(patientDelay.Value * 1000));
 
                 // Tjekker om venteværelset er fuldt
-                if (Antal_Venteværelse() == true)
+                if (Antal_Venteværelse())
                 {
-                    Antal_Venteværelse();
                     TilføjTekstTilStatus("Der er tilføjet en ny patient");
-                    TilføjTekstTilVenteværelse(Udskriv_Patient_Til_Venteværelse(patientnavn, patientnummer));
                     patientnummer = patientnummer + 1;
+
+                    TilføjTekstTilVenteværelse(Udskriv_Patient_Til_Venteværelse(patientnavn, patientnummer));
+                    if (!IsOdd(patientnummer) && !tandlægeLige._go)
+                    {
+                        TilføjTekstTilStatus("Patienten vækker TandlægeLige");
+                        //TilføjTekstTilTextboxStatus("Arbejder");
+                        lock (tandlægeLige)
+                        {
+                            Monitor.Pulse(tandlægeLige);
+                        }
+                    }
+                    if (IsOdd(patientnummer) && !tandlægeUlige._go)
+                    {
+                        TilføjTekstTilStatus("Patienten vækker TandlægeUlige");
+                        //TilføjTekstTilTextboxStatus("Arbejder");
+                        lock (tandlægeUlige)
+                        {
+                            Monitor.Pulse(tandlægeUlige);
+                        }
+                    }
                 }
                 else
                 {
@@ -106,6 +138,11 @@ namespace MultiThreading
             }
             {
             }
+        }
+
+        public static bool IsOdd(int value)
+        {
+            return value % 2 != 0;
         }
     }
 }

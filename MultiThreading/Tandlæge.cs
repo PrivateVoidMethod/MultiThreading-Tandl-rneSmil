@@ -16,11 +16,15 @@ namespace MultiThreading
         private Button knap;
         private string færdigePatient;
 
+        public Thread TandlægeTråd { get; set; }
         private static object listLocker = new object();
+
+        public bool _go = true;
+        private Patient patient;
 
         //Constructor
         public Tandlæge(ListBox venteværelse, ListBox listboxstatus, NumericUpDown tandlægedelay, TextBox textboxstatus,
-            TextBox textboxbehandling, Button knap)
+            TextBox textboxbehandling, Button knap, Patient patient)
         {
             this.venteværelse = venteværelse;
             this.tandlægedelay = tandlægedelay;
@@ -28,6 +32,7 @@ namespace MultiThreading
             this.textboxstatus = textboxstatus;
             this.textboxbehandling = textboxbehandling;
             this.knap = knap;
+            this.patient = patient;
         }
 
         // Overload construcktor
@@ -95,9 +100,9 @@ namespace MultiThreading
         }
 
         // Tager patient fra venteværelset og behandler ham
-        public void Tandæøge_Behandling()
+        public void TandlægePåbegynd()
         {
-            while (true)
+            while (_go)
             {
                 bool locked = false;
                 //  Bestemmer hastigheden
@@ -114,6 +119,7 @@ namespace MultiThreading
                             TilføjTekstTilListboxStatus("Ingen patienter i venteværelset");
                             TilføjTekstTilTextboxStatus("Sover");
                             TilføjTekstTilTextboxBehandling("");
+                            _go = false;
                         }
                         else if (venteværelse.Items.Count >= 1)
                         {
@@ -121,22 +127,22 @@ namespace MultiThreading
                             {
                                 TilføjTekstTilListboxStatus(Udskriv_Færdige_Patient());
                             }
-                            else if (textboxstatus.Text == "Sover")
-                            {
-                                venteværelse.Invoke((MethodInvoker)delegate ()
-                                {
-                                    string VågnOp = String.Format("{0} vækker tandlægen", venteværelse.TopIndex.ToString());
-                                    this.listboxstatus.BeginInvoke((MethodInvoker)delegate () { this.listboxstatus.Items.Add(VågnOp); });
-                                });
-                                Udskriv_VækTandlæge();
-                            }
+                            //else if (textboxstatus.Text == "Sover")
+                            //{
+                            //    venteværelse.Invoke((MethodInvoker)delegate ()
+                            //    {
+                            //        string VågnOp = String.Format("{0} vækker tandlægen", venteværelse.TopIndex.ToString());
+                            //        this.listboxstatus.BeginInvoke((MethodInvoker)delegate () { this.listboxstatus.Items.Add(VågnOp); });
+                            //    });
+                            //    Udskriv_VækTandlæge();
+                            //}
 
                             TilføjTekstTilTextboxStatus("Arbejder");
                             Udskriv_HvemDerBliverBehandlet();
                             venteværelse.Invoke((MethodInvoker)delegate ()
-                               {
-                                   venteværelse.Items.RemoveAt(venteværelse.TopIndex);
-                               });
+                            {
+                                venteværelse.Items.RemoveAt(venteværelse.TopIndex);
+                            });
                         }
                     }
                 }
@@ -146,6 +152,16 @@ namespace MultiThreading
                     if (locked)
                     {
                         Monitor.Exit(venteværelse);
+                    }
+                }
+
+                while (!_go)
+                {
+                    lock (this)
+                    {
+                        TilføjTekstTilListboxStatus("Tandlæge tråd lægger sig til at sove...");
+                        Monitor.Wait(this);
+                        _go = true;
                     }
                 }
             }
