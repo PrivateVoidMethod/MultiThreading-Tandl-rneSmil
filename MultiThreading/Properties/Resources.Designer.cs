@@ -63,6 +63,26 @@ namespace MultiThreading.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MultiThreading_GUI {
+            get {
+                object obj = ResourceManager.GetObject("MultiThreading GUI", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MultiThreading_GUI1 {
+            get {
+                object obj = ResourceManager.GetObject("MultiThreading GUI1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Tandlægerne_Smil_Design {
             get {
                 object obj = ResourceManager.GetObject("Tandlægerne Smil Design", resourceCulture);

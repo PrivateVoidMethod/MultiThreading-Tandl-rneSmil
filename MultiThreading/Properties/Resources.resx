@@ -118,13 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Tandlægerne-Smil-Design2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Tandlægerne-Smil-Design2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Tandlægerne Smil Design" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Tandlægerne Smil Design.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Tandlægerne-Smil-Design2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Tandlægerne-Smil-Design2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MultiThreading GUI" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MultiThreading GUI.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Tandlægerne-Smil-Design3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Tandlægerne-Smil-Design3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MultiThreading GUI1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MultiThreading GUI1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
