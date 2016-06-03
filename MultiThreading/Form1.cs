@@ -16,7 +16,6 @@ namespace MultiThreading
     {
         //Instancer til klasser
         private Patient patient = new Patient();
-
         private Tandlæge tandlægeLige = new Tandlæge();
         private Tandlæge tandlægeUlige = new Tandlæge();
 
@@ -24,7 +23,6 @@ namespace MultiThreading
         public Form1()
         {
             InitializeComponent();
-
             tandlægeLige = new Tandlæge(Venteværelse_Listbox, Status_Listbox, numericUpDown2, textBox_Status, textBox_Patient, Start_Knap, patient);
             tandlægeUlige = new Tandlæge(Venteværelse_Listbox, Status_Listbox, numericUpDown3, TextBoxStatus2, textBox_Patient2, Start_Knap, patient);
             patient = new Patient(Venteværelse_Listbox, Status_Listbox, numericUpDown1, Start_Knap, this, tandlægeLige, textBox_Status, tandlægeUlige);
@@ -52,9 +50,19 @@ namespace MultiThreading
             {
                 //Lukker programmet
                 Application.ExitThread();
-
                 Environment.Exit(0);
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.ExitThread();
+            Environment.Exit(0);
         }
     }
 }
