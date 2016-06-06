@@ -74,13 +74,13 @@ namespace MultiThreading
            });
         }
 
-        // Tilføjer tekst til textboxBehanding
+        // Tilføjer tekst til listbox
         private void TilføjTekstTilTextboxBehandling(string Tekst)
         {
             textboxbehandling.BeginInvoke((MethodInvoker)delegate () { textboxbehandling.Text = (Tekst); });
         }
 
-        //Tilføjer tekst til textboxBehandling
+        //Tilføjer tekst til listboxStatus
         private void TilføjTekstTilListboxStatus(string Tekst)
         {
             listboxstatus.BeginInvoke((MethodInvoker)delegate () { listboxstatus.Items.Add(Tekst); });
@@ -100,67 +100,58 @@ namespace MultiThreading
         }
 
         // Tager patient fra venteværelset og behandler ham
-        public void TandlægePåbegynd()
+        public void TandlægePåbegynd() // Metode som tandlæge trådende bruger
         {
-            while (_go)
+            while (_go) // _go er en bool
             {
-                bool locked = false;
-                //  Bestemmer hastigheden
-                Thread.Sleep(Convert.ToInt32(tandlægedelay.Value * 1000));
+                bool locked = false; // Bruges til monitor.tryenter for at sikre sig at der kun er en tråd som kan få adgang
+
+                Thread.Sleep(Convert.ToInt32(tandlægedelay.Value * 1000));  //  Bestemmer hastigheden for tandlægerne
 
                 try
                 {
-                    Monitor.TryEnter(venteværelse, ref locked);
+                    Monitor.TryEnter(venteværelse, ref locked); // Her sørger den for at kun en tråd kan bruge venteværelset afgangen
 
                     if (locked)
                     {
-                        if (venteværelse.Items.Count == 0)
+                        if (venteværelse.Items.Count == 0) // Hvis der ikke er nogle i venteværelset
                         {
                             TilføjTekstTilListboxStatus("Ingen patienter i venteværelset");
                             TilføjTekstTilTextboxStatus("Sover");
                             TilføjTekstTilTextboxBehandling("");
                             _go = false;
                         }
-                        else if (venteværelse.Items.Count >= 1)
+                        else if (venteværelse.Items.Count >= 1) // Hvis der er nogle i venteværeset
                         {
                             if (textboxbehandling.Text != "")
                             {
-                                TilføjTekstTilListboxStatus(Udskriv_Færdige_Patient());
+                                TilføjTekstTilListboxStatus(Udskriv_Færdige_Patient()); // Udskriver at patienten er færdig med behandling
                             }
-                            //else if (textboxstatus.Text == "Sover")
-                            //{
-                            //    venteværelse.Invoke((MethodInvoker)delegate ()
-                            //    {
-                            //        string VågnOp = String.Format("{0} vækker tandlægen", venteværelse.TopIndex.ToString());
-                            //        this.listboxstatus.BeginInvoke((MethodInvoker)delegate () { this.listboxstatus.Items.Add(VågnOp); });
-                            //    });
-                            //    Udskriv_VækTandlæge();
-                            //}
 
                             TilføjTekstTilTextboxStatus("Arbejder");
-                            Udskriv_HvemDerBliverBehandlet();
+                            Udskriv_HvemDerBliverBehandlet(); // Udskriver hvem der har sat sig i tandlæge stolen
                             venteværelse.Invoke((MethodInvoker)delegate ()
                             {
-                                venteværelse.Items.RemoveAt(venteværelse.TopIndex);
+                                venteværelse.Items.RemoveAt(venteværelse.TopIndex); // Fjerner den patient der bliver behandlet fra venteværelset
                             });
                         }
                     }
                 }
                 finally
                 {
-                    Autoscrole();
+                    Autoscrole(); // Sørger for at listboxen altid viser det sidste der er sket
                     if (locked)
                     {
-                        Monitor.Exit(venteværelse);
+                        Monitor.Exit(venteværelse); // gør det muligt for en ny tråd at få adgang til venteværelset
                     }
                 }
 
-                while (!_go)
+                while (!_go) // Hvis der ikke er folk i venteværelet
                 {
                     lock (this)
                     {
                         TilføjTekstTilListboxStatus("Tandlæge tråd lægger sig til at sove...");
-                        Monitor.Wait(this);
+                        Monitor.Wait(this); // Ligger tråden til at sove
                         _go = true;
                     }
                 }

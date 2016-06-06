@@ -99,32 +99,29 @@ namespace MultiThreading
         {
             while (true)
             {
-                // Bestemmer hastigheden
-                Thread.Sleep(Convert.ToInt32(patientDelay.Value * 1000));
+                Thread.Sleep(Convert.ToInt32(patientDelay.Value * 1000));  // Bestemmer hastigheden på patienterne
 
-                // Tjekker om venteværelset er fuldt
-                if (Antal_Venteværelse())
+                if (Antal_Venteværelse())// metoder som returnere true hvis der er plads i venteværelset
                 {
                     TilføjTekstTilStatus("Der er tilføjet en ny patient");
                     patientnummer = patientnummer + 1;
 
-                    TilføjTekstTilVenteværelse(Udskriv_Patient_Til_Venteværelse(patientnavn, patientnummer));
+                    TilføjTekstTilVenteværelse(Udskriv_Patient_Til_Venteværelse(patientnavn, patientnummer)); // Udskriver patienten med et unikt nummer til venteværeset
+
                     if (!IsOdd(patientnummer) && !tandlægeLige._go)
                     {
                         TilføjTekstTilStatus("Patienten vækker TandlægeLige");
-                        //TilføjTekstTilTextboxStatus("Arbejder");
                         lock (tandlægeLige)
                         {
-                            Monitor.Pulse(tandlægeLige);
+                            Monitor.Pulse(tandlægeLige);// vækker tandlæge lige
                         }
                     }
-                    if (IsOdd(patientnummer) && !tandlægeUlige._go)
+                    else if (IsOdd(patientnummer) && !tandlægeUlige._go)
                     {
                         TilføjTekstTilStatus("Patienten vækker TandlægeUlige");
-                        //TilføjTekstTilTextboxStatus("Arbejder");
                         lock (tandlægeUlige)
                         {
-                            Monitor.Pulse(tandlægeUlige);
+                            Monitor.Pulse(tandlægeUlige);// vækker tandlæge udlige
                         }
                     }
                 }
