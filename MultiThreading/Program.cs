@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MultiThreading
-{
+{ //KODET AF: PAUL & KASPER
     static class Program
     {
         /// <summary>
